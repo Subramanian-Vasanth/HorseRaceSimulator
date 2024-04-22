@@ -3,7 +3,7 @@
  * Write a description of class Horse here.
  * 
  * @author (Vasanth Subramanian) 
- * @version (Version 1.0 2/4/24)
+ * @version (Version 1.0.1 22/4/24)
  */
 public class Horse
 {
@@ -39,6 +39,15 @@ public class Horse
     public void fall()
     {
         fallen=true;
+        return;
+    }
+
+    /**
+     * Method to make fallen= flase
+     */
+    public void reset()
+    {
+        fallen=false;
         return;
     }
     
