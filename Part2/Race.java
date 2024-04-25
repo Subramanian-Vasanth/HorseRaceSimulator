@@ -20,11 +20,13 @@ import java.util.InputMismatchException;
 public class Race
 {
     private int raceLength;
-    private List<Horse> horses = new ArrayList<>();
+    public List<Horse> horses = new ArrayList<>();
     private final int numberOfLanes;
-    private Map<Horse,Double> results= new HashMap<>();
-    private Map<Horse, Integer> points = new HashMap<>();
-    private Map<Horse, Integer> overallPoints = new HashMap<>();
+    public Map<Horse,Double> results= new HashMap<>();
+    public Map<Horse, Integer> points = new HashMap<>();
+    public Map<Horse, Integer> overallPoints = new HashMap<>();
+    public double fall;
+    public int placement;
 
     /**
      * Constructor for objects of class Race
@@ -38,6 +40,8 @@ public class Race
         // initialise instance variables
         raceLength = distance;
         numberOfLanes=lanes;
+        fall=-1.0;
+        placement=lanes;
     }
     
     /**
@@ -389,7 +393,7 @@ public class Race
     /**
      * Calculates the points earned by each horse once the race finishes, and updates the overall points earned by each horse in the championship.
      */
-    private void calculatePoints() {
+    public void calculatePoints() {
         int numberOfLanes = horses.size();
         int pointsEarned = numberOfLanes;
 
@@ -420,6 +424,42 @@ public class Race
             overallPoints.put(horse, overallPoints.getOrDefault(horse, 0) + (time >= 0 ? pointsEarned : 0));
         }
     }
+
+    /**
+     * Calculates the points earned by each horse once the race finishes, and updates the overall points earned by each horse in the championship if called at the end
+     */
+    public void calculatePoints(Boolean end) {
+        int numberOfLanes = horses.size();
+        int pointsEarned = numberOfLanes;
+
+        // Sort the race results by time taken to finish
+        List<Map.Entry<Horse, Double>> entries = new ArrayList<>(results.entrySet());
+        Collections.sort(entries, Comparator.comparing(Map.Entry::getValue));
+
+        // Track the previous time to detect ties in the race
+        double previousTime = -0.1;
+
+        // Iterate over the sorted entries to assign points to horses
+        for (Map.Entry<Horse, Double> entry : entries) {
+            // Get the horse and its finishing time
+            Horse horse = entry.getKey();
+            double time = entry.getValue();
+
+            // Decrement points earned if there's a new position or a tie
+            if (time >= 0 && time != previousTime) {
+                pointsEarned--;
+                previousTime = time;
+            }
+
+            // Assign points to the horse based on its finishing position
+            // If the horse didn't finish, assign 0 points
+            points.put(horse, time >= 0 ? pointsEarned : 0);
+
+            // Update overall points earned by the horse in the championship
+            if (end==true) overallPoints.put(horse, overallPoints.getOrDefault(horse, 0) + (time >= 0 ? pointsEarned : 0));
+        }
+    }
+
 
     /**
      * Prints the race results including each horse's position and points earned.
@@ -604,7 +644,7 @@ public class Race
      *
      * @return true if all horses have finished or fallen, false otherwise
      */
-    private boolean allHorsesFinishedOrFallen() {
+    public boolean allHorsesFinishedOrFallen() {
         for (Horse horse : horses) {
             if (horse.getDistanceTravelled() == raceLength || horse.hasFallen()) {
                 continue;
@@ -654,5 +694,23 @@ public class Race
     
         return sortedMap;
     }   
+
+
+    public void race(double time) {
+
+        // Move each horse
+        for (Horse horse : horses) {
+            moveHorse(horse);
+            if (horse.hasFallen() && !results.containsKey(horse)) {
+                results.put(horse, fall--);
+                updateConfidence(horse, -1); // Decrease confidence if the horse falls
+            }
+            if (raceWonBy(horse) && !results.containsKey(horse)) {
+                results.put(horse, time);
+                updateConfidence(horse, placement); // Increase confidence if the horse wins
+                placement--; // Decrease placement for the next horse
+            }
+        }
+    }
     
 }

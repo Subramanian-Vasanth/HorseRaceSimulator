@@ -1,3 +1,7 @@
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
  * Write a description of class Horse here.
@@ -14,7 +18,10 @@ public class Horse
     private char icon;
     private int distance;
     private boolean fallen;
-    private double confidence;    
+    private double confidence;
+    private BufferedImage horseImage;   
+    private BufferedImage fallenImage;
+    private BufferedImage displayImage;
       
     //Constructor of class Horse
     /**
@@ -28,7 +35,24 @@ public class Horse
         distance=0;
         fallen=false;
     }
+
+    public Horse(char symbol, String name, double confidence, BufferedImage horseImage) {
+        this.icon = symbol;
+        this.name = name;
+        this.confidence = confidence;
+        this.horseImage = horseImage;
+        try{
+            fallenImage=ImageIO.read(new File("Fallen.png"));
+        } 
+        catch(IOException e){}
+        displayImage=horseImage;
+    }
     
+    public BufferedImage getHorseImage() {
+        return displayImage;
+    }
+
+
     
     
     //Other methods of class Horse
@@ -39,6 +63,7 @@ public class Horse
     public void fall()
     {
         fallen=true;
+        displayImage=fallenImage;
         return;
     }
 
@@ -48,6 +73,7 @@ public class Horse
     public void reset()
     {
         fallen=false;
+        displayImage=horseImage;
         return;
     }
     
