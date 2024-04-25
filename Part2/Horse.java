@@ -165,28 +165,6 @@ public class Horse
     private static void printout (Horse horse){
         System.out.println("name: "+horse.name+" | icon: "+horse.icon+" | fallen: "+horse.fallen+" | distance: "+horse.distance+" | confidence: "+horse.confidence);
     }
-
-    /**
-     * Method to test the fall() method
-     */
-    private static void testFall(){
-        Horse test = new Horse('A', "testName", 0.5);
-        System.out.println("Before: ");
-        printout(test);
-        System.out.println("After: ");
-        test.fall();
-        printout(test);
-        // (expected:) name: testName | icon: A | fallen: true | distance: 0 | confidence: 0.5
-    }
-
-    /**
-     * Method to test the constructor method Horse
-     */
-    private static void testConstructor(){
-        Horse test = new Horse('A', "testName", 0.5);
-        printout(test);
-        // (expected:) name: testName | icon: A | fallen: false | distance: 0 | confidence: 0.5
-    }
     
     /**
      * main method, currently used to test code

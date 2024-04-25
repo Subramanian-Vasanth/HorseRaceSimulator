@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+// calss to make a panel to display the race
 public class RaceDisplayPanel extends JPanel {
     private List<Horse> horses;
     private int raceLength;
@@ -15,7 +16,7 @@ public class RaceDisplayPanel extends JPanel {
         this.raceLength = raceLength;
         this.imagePath=imagePath;
         setOpaque(false);
-        setPreferredSize(new Dimension(600, 400)); // Adjust panel size as needed
+        setPreferredSize(new Dimension(600, 400)); // panel size
     }
 
     @Override
@@ -27,10 +28,10 @@ public class RaceDisplayPanel extends JPanel {
         BufferedImage backgroundImage = loadImage(imagePath);
 
         // Calculate dimensions for the race display
-        int horseWidth = 40; // Width of horse square
-        int horseHeight = 40; // Height of horse square
+        int horseWidth = 40; 
+        int horseHeight = 40; 
         int raceWidth = getWidth() - 100; // Width of the race track (excluding labels)
-        int raceHeight = getHeight() - 100; // Height of the race track
+        int raceHeight = getHeight() - 100; 
         int startX = 50; // X-coordinate of the left side of the race track
         int startY = 50; // Y-coordinate of the top side of the race track
 
@@ -43,7 +44,6 @@ public class RaceDisplayPanel extends JPanel {
             int x = (int) (50 + (double) horse.getDistanceTravelled() / raceLength * (raceWidth - horseWidth));
             int y = (int) (raceHeight * (i + 1) / (double) (horses.size() + 1))-30; // Vertical position of the horse
 
-            // Adjust x-coordinate to ensure the horse stays within the race track boundaries
             x = Math.min(x, raceWidth - horseWidth);
 
             // Draw horse image

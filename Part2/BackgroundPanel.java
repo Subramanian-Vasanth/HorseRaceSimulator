@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
+// class to make panels with a background image
 public class BackgroundPanel extends JPanel {
     private BufferedImage backgroundImage;
 

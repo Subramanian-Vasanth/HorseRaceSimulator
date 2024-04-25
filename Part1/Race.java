@@ -15,7 +15,7 @@ import java.util.InputMismatchException;
  * Simulation of horse races and championships
  * 
  * @author McFarewell, Vasanth Subramanian
- * @version 1.0.1
+ * @version 1.0.1 
  */
 public class Race
 {
